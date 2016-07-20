@@ -3,13 +3,19 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math/rand"
 	"os"
 	"strconv"
+	"time"
 )
 
 // Initial partition fn, doesn't do anything so
 // the pivot is picked as first element
 var choosePartition = func(arr []int) {
+}
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
 }
 
 func main() {
@@ -23,6 +29,8 @@ func main() {
 	fmt.Println("# of comparisons with first pivot:\t", qsort(append([]int(nil), integers...)))
 	choosePartition = chooseLast
 	fmt.Println("# of comparisons with last pivot:\t", qsort(append([]int(nil), integers...)))
+	choosePartition = chooseRdm
+	fmt.Println("# of comparisons with random pivot:\t", qsort(append([]int(nil), integers...)))
 	choosePartition = chooseMedn
 	fmt.Println("# of comparisons with median pivot:\t", qsort(integers))
 }
@@ -52,6 +60,11 @@ func chooseMedn(arr []int) {
 	case arr[0] < arr[n] && arr[n] < arr[m], arr[m] < arr[n] && arr[n] < arr[0]:
 		arr[0], arr[n] = arr[n], arr[0]
 	}
+}
+
+func chooseRdm(arr []int) {
+	r := rand.Intn(len(arr))
+	arr[0], arr[r] = arr[r], arr[0]
 }
 
 func partition(arr []int) int {
