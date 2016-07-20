@@ -1,5 +1,31 @@
 1. You are given as input an unsorted array of n distinct numbers, where n is a power of 2. Give an algorithm that identifies the second-largest number in the array, and that uses at most n+log2n−2 comparisons.
 
+// Assumes arr has atleast 2 elems
+func secondLargest(arr []int) int {
+    _, losers := largest(arr)
+    max := losers[0]
+    for _, i := range losers[1:] {
+        if i > max {
+            max = i
+        }
+    }
+    return i
+}
+
+func largest(arr []int) (int, []int) {
+    n := len(arr)
+    if n == 1 {
+        return arr[0], nil
+    }
+    left,  llosers := largest(arr[:n/2])
+    right, rlosers := largest(arr[n/2:])
+
+    if left > right {
+        return left, append(llosers, right)
+    }
+    return right, append(rlosers, left)
+}
+
 2. You are a given a unimodal array of n distinct elements, meaning that its entries are in increasing order up until its maximum element, after which its elements are in decreasing order. Give an algorithm to compute the maximum element that runs in O(log n) time.
     - Fix array A of length n
     - Let M = A[n/2]
@@ -24,3 +50,17 @@
     }
 
 3. You are given a sorted (from smallest to largest) array A of n distinct integers which can be positive, negative, or zero. You want to decide whether or not there is an index i such that A[i] = i. Design the fastest algorithm that you can for solving this problem.
+
+func isIati(arr []int) bool {
+    n := len(arr)
+    if n == 0 || arr[0] > 0 || arr[n-1] < n-1 {
+        return false
+    }
+    switch {
+    case arr[n/2] > n/2:
+        return isIati(arr[:n/2]
+    case arr[n/2] < n/2:
+        return isIati(arr[n/2:]
+    }
+    return true
+}
