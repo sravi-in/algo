@@ -12,6 +12,10 @@ func TestQsort(t *testing.T) {
 		{"10.txt", 25, 29, 21},
 		{"100.txt", 615, 587, 518},
 		{"1000.txt", 10297, 10184, 8921},
+		{"sorted.txt", 28, 28, 13},
+		{"unsorted.txt", 15, 15, 13},
+		{"pathological.txt", 90, 99, 90},
+		{"QuickSort.txt", 162085, 164123, 138382},
 	}
 
 	for _, c := range tests {
