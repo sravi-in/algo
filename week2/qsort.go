@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"math/rand"
 	"os"
 	"strconv"
@@ -78,4 +79,17 @@ func partition(arr []int) int {
 	}
 	arr[0], arr[i-1] = arr[i-1], arr[0]
 	return i - 1
+}
+
+func readFile(file string) (integers []int) {
+	f, err := os.Open(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		i, _ := strconv.Atoi(scanner.Text())
+		integers = append(integers, i)
+	}
+	return
 }
