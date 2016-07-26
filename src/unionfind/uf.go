@@ -11,14 +11,25 @@ func NewSet(n int) (uf UnionFind) {
 }
 
 func (uf UnionFind) Union(p, q int) {
-	pRoot := uf.Find(p - 1)
-	qRoot := uf.Find(q - 1)
+	pRoot, pRank := uf.intFind(p)
+	qRoot, qRank := uf.intFind(q)
 
-	uf[pRoot] = qRoot
+	if pRank < qRank {
+		uf[pRoot] = qRoot
+	} else {
+		uf[qRoot] = pRoot
+	}
 }
 
 func (uf UnionFind) Find(p int) int {
+	root, _ := uf.intFind(p)
+	return root
+}
+
+func (uf UnionFind) intFind(p int) (int, int) {
+	i := 0
 	for p--; uf[p] != p; p = uf[p] {
+		i++
 	}
-	return p + 1
+	return p, i
 }
