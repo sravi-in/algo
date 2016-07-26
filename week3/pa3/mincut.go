@@ -8,8 +8,8 @@ import (
 )
 
 type Graph struct {
-	V map[Vertex][]Vertex
-	E map[Edge]int
+	n, m int
+	E    []Edge
 }
 
 type Vertex int
