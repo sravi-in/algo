@@ -36,7 +36,7 @@ func minCut(g *Graph) (cuts []Edge) {
 	cuts = randomContraction(g)
 	// Run Krager's random contraction for n^2.log(n) trials
 	// and remember mincut in cuts
-	for t := n * n * int(math.Log(float64(n))); t > 0; t-- {
+	for t := n * n * int(math.Log10(float64(n))); t > 0; t-- {
 		k := randomContraction(g)
 		if len(k) < len(cuts) {
 			cuts = k

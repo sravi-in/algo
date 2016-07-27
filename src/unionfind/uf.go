@@ -1,35 +1,38 @@
 package unionfind
 
-type UnionFind []int
+type UnionFind struct {
+	id, sz []int
+}
 
-func NewSet(n int) (uf UnionFind) {
-	uf = make([]int, n)
+func NewSet(n int) *UnionFind {
+	uf := UnionFind{id: make([]int, n), sz: make([]int, n)}
 	for i := 0; i < n; i++ {
-		uf[i] = i
+		uf.id[i] = i
+		uf.sz[i] = 1
 	}
-	return
+	return &uf
 }
 
-func (uf UnionFind) Union(p, q int) {
-	pRoot, pRank := uf.intFind(p)
-	qRoot, qRank := uf.intFind(q)
+func (uf *UnionFind) Union(p, q int) {
+	pRoot := uf.Find(p)
+	qRoot := uf.Find(q)
 
-	if pRank < qRank {
-		uf[pRoot] = qRoot
+	if uf.sz[pRoot] < uf.sz[qRoot] {
+		uf.id[pRoot] = qRoot
+		uf.sz[qRoot] += uf.sz[pRoot]
 	} else {
-		uf[qRoot] = pRoot
+		uf.id[qRoot] = pRoot
+		uf.sz[pRoot] += uf.sz[qRoot]
 	}
 }
 
-func (uf UnionFind) Find(p int) int {
-	root, _ := uf.intFind(p)
-	return root
-}
-
-func (uf UnionFind) intFind(p int) (int, int) {
-	i := 0
-	for p--; uf[p] != p; p = uf[p] {
-		i++
+func (uf *UnionFind) Find(p int) int {
+	// Internal index starts with 0
+	p--
+	for uf.id[p] != p {
+		//Lazy path compression, set id to grandparent everytime
+		uf.id[p] = uf.id[uf.id[p]]
+		p = uf.id[p]
 	}
-	return p, i
+	return p
 }
