@@ -12,6 +12,17 @@ import (
 
 const (
 	MAX_VERTICES = 875715
+	GRAPH        = "SCC.txt"
+	//MAX_VERTICES = 10
+	//GRAPH        = "test1.txt"
+	//MAX_VERTICES = 9
+	//GRAPH        = "test2.txt"
+	//MAX_VERTICES = 9
+	//GRAPH        = "test3.txt"
+	//MAX_VERTICES = 9
+	//GRAPH        = "test4.txt"
+	//MAX_VERTICES = 13
+	//GRAPH        = "test5.txt"
 )
 
 var (
@@ -32,16 +43,16 @@ type Scc struct {
 type Sccs []Scc
 
 func main() {
-	g := readGraphRev("SCC.txt")
+	g := readGraphRev(GRAPH)
 	var f Ftime = make([]int, MAX_VERTICES)
 	var e Explored = make([]bool, MAX_VERTICES)
 	finishTimes(g, f, e)
-	g = readGraphFwd("SCC.txt")
+	g = readGraphFwd(GRAPH)
 	e = make([]bool, MAX_VERTICES)
 	var l Leader = make([]int, MAX_VERTICES)
 	leader(g, f, l, e)
 	sccs := getSccs(l)
-	fmt.Println(sccs[:10])
+	fmt.Println(len(sccs), sccs[:10])
 }
 
 func readGraphRev(file string) Graph {
@@ -79,7 +90,7 @@ func dfs1(g Graph, start int, f Ftime, e Explored) {
 		}
 	}
 	t++
-	f[start] = t
+	f[t] = start
 }
 
 func readGraphFwd(file string) Graph {
