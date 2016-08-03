@@ -1,0 +1,12 @@
+shortest-path(G, start)
+    set every vertices of G as unexplored
+    newHeap entry A[start] = 0
+    while v, A[v] := deHeap
+        set v as explored
+        shortest path from start to v is A[v]
+        for w := range E[v]
+            if w is unexplored
+                addHeap A[w] = min(A[w], A[v]+l(v,w))
+
+
+addHeap(v, score)
