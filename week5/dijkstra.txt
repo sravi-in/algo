@@ -10,3 +10,9 @@ shortest-path(G, start)
 
 
 addHeap(v, score)
+    - heap = append(heap, {v, score})
+    i := n - 1
+    while i && heap[i] < heap[(i-1)/2]
+        swap heap[i], heap[(i-1)/2]
+        i = (i-1)/2
+    return i
