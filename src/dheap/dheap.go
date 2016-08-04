@@ -1,6 +1,8 @@
 // package dheap is a heap used by dijkstra's algo
 package dheap
 
+import "fmt"
+
 type DHeap struct {
 	h []*DScore
 	m map[int]*DScore
@@ -33,6 +35,20 @@ func (dh *DHeap) Insert(d *DScore) {
 }
 
 func (dh *DHeap) Remove() *DScore {
+	n := len(dh.h)
+
+	if n == 0 {
+		return nil
+	}
+	d := dh.h[0]
+	dh.h[0], dh.h[n-1] = dh.h[n-1], dh.h[0]
+	dh.h[0].index, dh.h[n-1].index = 0, n-1
+	delete(dh.m, d.V)
+	dh.h = dh.h[:n-1]
+	if n > 1 {
+		dh.fix(dh.h[0])
+	}
+	return d
 }
 
 func (dh *DHeap) fix(d *DScore) {
@@ -49,12 +65,26 @@ func (dh *DHeap) fix(d *DScore) {
 	for {
 		i = d.index
 		c1, c2 := i*2+1, i*2+2
+		if c2 < n && dh.h[c2].Score < dh.h[c1].Score {
+			j = c2
+		} else {
+			j = c1
+		}
 
-		if c1 < n && dh.h[i] > dh.h[c1] {
-			dh.h[i], dh.h[c1] = dh.h[c1], dh.h[i]
-			dh.h[i].index, dh.h[c1].index = i, c1
-			continue
+		if j < n && dh.h[i].Score > dh.h[j].Score {
+			dh.h[i], dh.h[j] = dh.h[j], dh.h[i]
+			dh.h[i].index, dh.h[j].index = i, j
+		} else {
+			break
 		}
 
 	}
+}
+
+func (dh *DHeap) String() string {
+	return fmt.Sprintf("Heap: %d elements\n%v\nMap: %d elements\n%v\n", len(dh.h), dh.h, len(dh.m), dh.m)
+}
+
+func (d *DScore) String() string {
+	return fmt.Sprintf("<v:%d,score:%d>", d.V, d.Score)
 }
