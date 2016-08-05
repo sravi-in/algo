@@ -21,7 +21,7 @@ func (dh *DHeap) Insert(d *DScore) {
 	// An entry already exists for v, check if the new score is
 	// minimum and add
 	if ok {
-		if val.Score < d.Score {
+		if val.Score <= d.Score {
 			return
 		}
 		val.Score = d.Score
